@@ -19,3 +19,4 @@ Route::prefix('admin')
             return view('backend.dashboard');
         })->name('dashboard');
 
+    });
