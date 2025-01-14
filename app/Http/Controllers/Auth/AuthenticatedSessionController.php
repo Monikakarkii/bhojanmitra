@@ -19,6 +19,7 @@ class AuthenticatedSessionController extends Controller
     {
         // Redirect authenticated users to their respective dashboard
         if (Auth::check()) {
+
             return $this->redirectToDashboard(Auth::user()->role);
         }
 
@@ -35,10 +36,10 @@ class AuthenticatedSessionController extends Controller
     $request->session()->regenerate();
     if (Auth::user()->role == 'admin') {
         return redirect()->intended(route('dashboard', absolute: false));
-    } elseif (Auth::user()->role == 'kitchen' || Auth::user()->role == 'admin') {
-        return redirect()->intended(route('kitchen-dashboard', absolute: false));
+    // } elseif (Auth::user()->role == 'kitchen' || Auth::user()->role == 'admin') {
+    //     // return redirect()->intended(route('kitchen-dashboard', absolute: false));
     } else {
-        return redirect()->intended(route('/', absolute: false));
+        return redirect()->intended(route('welcome', absolute: false));
     }
 }
 
@@ -61,9 +62,9 @@ class AuthenticatedSessionController extends Controller
             case 'admin':
                 return redirect()->intended(route('dashboard', absolute: false));
             case 'kitchen':
-                return redirect()->intended(route('kitchen-dashboard', absolute: false));
+                // return redirect()->intended(route('kitchen-dashboard', absolute: false));
             default:
-                return redirect()->intended(route('/', absolute: false));
+                return redirect()->intended(route(name: '/', absolute: false));
         }
     }
 }

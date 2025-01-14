@@ -6,7 +6,6 @@
             alt="{{ websiteInfo() ? websiteInfo()->app_name : 'Default App Name' }}"
             class="brand-image img-circle elevation-3"
             style="max-width: 60px; max-height: 60px; margin-bottom: 10px; border: 2px solid #ddd; padding: 5px; border-radius: 50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-
         <!-- Website Info -->
         <span class="brand-text font-weight-light" style="font-size: 18px; font-weight: 600;">
             {{ websiteInfo() ? websiteInfo()->app_name : 'Default App Name' }}
@@ -37,7 +36,7 @@
                         </p>
                     </a>
                 </li>
-                <li
+                {{-- <li
                     class="nav-item {{ request()->route()->named('tables.create') || request()->route()->named('tables.index') || request()->route()->named('tables.edit') ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
@@ -142,7 +141,7 @@
                             Sales
                         </p>
                     </a>
-                </li>
+                </li> --}}
 
 
             </ul>

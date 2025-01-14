@@ -46,7 +46,8 @@
                         <!-- small box -->
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3>{{$tablesCount}}</h3>
+                                {{-- <h3>{{$tablesCount}}</h3> --}}
+                                <h3>5</h3>
                                 <p>Tables</p>
                             </div>
                             <div class="icon">
@@ -100,7 +101,8 @@
                                     Orders
                                 </h3>
                                 <div class="card-tools">
-                                    <a href="{{ route('orders.index') }}" class=" ml-2">
+                                    {{-- <a href="{{ route('orders.index') }}" class=" ml-2"> --}}
+                                        <a href="#" class=" ml-2">
                                         <i class="fas fa-red o"></i> View All Orders
                                     </a>
                                 </div>
@@ -110,7 +112,7 @@
                                     <!-- Latest Orders -->
                                     <div class="tab-pane active" id="latest-orders" style="position: relative; height: auto;">
                                         <h5>Latest 5 Orders</h5>
-                                        <ul class="list-group">
+                                        {{-- <ul class="list-group">
                                             @forelse($orders as $order)
                                                 <li class="list-group-item">
                                                     <div>
@@ -135,7 +137,7 @@
                                             @empty
                                                 <li class="list-group-item text-center text-muted">No recent orders available</li>
                                             @endforelse
-                                        </ul>
+                                        </ul> --}}
                                     </div>
                                 </div>
                             </div>
