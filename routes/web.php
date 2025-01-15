@@ -25,6 +25,7 @@ Route::prefix('admin')
 
             return view('backend.dashboard');
         })->name('dashboard');
+
         Route::get('site-settings', [SiteSettingController::class, 'index'])->name('site-settings.index');
         Route::post('site-settings', [SiteSettingController::class, 'store'])->name('site-settings.create');
 
