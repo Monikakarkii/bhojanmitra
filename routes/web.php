@@ -6,6 +6,7 @@ use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\MenuItemController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,5 +33,8 @@ Route::prefix('admin')
 
         Route::resource('categories', CategoryController::class);
         Route::post('/categories/search', [CategoryController::class, 'search'])->name('categories.search');
+
+        Route::resource('menu-items', MenuItemController::class);
+        Route::post('/menuitems/search', [MenuItemController::class, 'search'])->name('menu-items.search');
 
     });
