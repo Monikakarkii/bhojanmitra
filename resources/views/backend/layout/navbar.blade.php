@@ -20,8 +20,7 @@
                 <h4 class="h4 mb-0"><strong>{{ Auth::user()->name }}</strong></h4>
                 <div class="mb-3">{{ Auth::user()->email }}</div>
                 <div class="dropdown-divider"></div>
-                {{-- <a href="{{ route('profile.edit') }}" class="dropdown-item"> --}}
-                <a href="#" class="dropdown-item">
+                <a href="{{ route('profile.edit') }}" class="dropdown-item">
                     <i class="fas fa-user-cog mr-2"></i>Profile Settings
                 </a>
                 <div class="dropdown-divider"></div>
