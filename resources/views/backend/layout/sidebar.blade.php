@@ -62,7 +62,7 @@
                         </li>
                     </ul>
                 </li>
-                {{-- <li
+                <li
                     class="nav-item {{ request()->route()->named('categories.create') || request()->route()->named('categories.index') || request()->route()->named('categories.edit') ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tags"></i> <!-- Icon for Categories -->
@@ -88,7 +88,7 @@
                         </li>
                     </ul>
                 </li>
-                <li
+                {{-- <li
                     class="nav-item {{ request()->route()->named('menu-items.create') || request()->route()->named('menu-items.index') || request()->route()->named('menu-items.edit') ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-utensils"></i> <!-- Icon for Menu Items -->

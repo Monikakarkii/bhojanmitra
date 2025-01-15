@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\CategoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,5 +29,8 @@ Route::prefix('admin')
 
         Route::resource('tables', TableController::class);
         Route::post('/tables/search', [SearchController::class, 'searchTables'])->name('tables.search');
+
+        Route::resource('categories', CategoryController::class);
+        Route::post('/categories/search', [CategoryController::class, 'search'])->name('categories.search');
 
     });
