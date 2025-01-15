@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\SiteSettingController;
+use App\Http\Controllers\TableController;
+use App\Http\Controllers\SearchController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,5 +25,8 @@ Route::prefix('admin')
         })->name('dashboard');
         Route::get('site-settings', [SiteSettingController::class, 'index'])->name('site-settings.index');
         Route::post('site-settings', [SiteSettingController::class, 'store'])->name('site-settings.create');
+
+        Route::resource('tables', TableController::class);
+        Route::post('/tables/search', [SearchController::class, 'searchTables'])->name('tables.search');
 
     });

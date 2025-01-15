@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    {{-- <title>{{ websiteInfo()->app_name }} - @yield('title', 'Default Title')</title> --}}
-    <title>Bhojan Mitra</title>
+    <title>{{ websiteInfo()->app_name }} - @yield('title', 'Default Title')</title>
+
     <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('adminlte/plugins/toastr/toastr.min.css') }}">
@@ -15,16 +15,16 @@
     <link rel="stylesheet"
         href="{{ asset('adminlte/plugins/token_input_bootstrap/css/bootstrap-tokenfield.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('adminlte/plugins/sweetalert2/sweetalert2.min.css') }}">
-    {{-- <link rel="icon" type="image/png"
-        href="{{ websiteInfo() && websiteInfo()->first() && websiteInfo()->app_logo ? asset('app_logo/' . websiteInfo()->app_logo) : asset('default/website.png') }}"> --}}
+    <link rel="icon" type="image/png"
+        href="{{ websiteInfo() && websiteInfo()->first() && websiteInfo()->app_logo ? asset('app_logo/' . websiteInfo()->app_logo) : asset('default/website.png') }}">
 
     <!-- Add dynamic theme color CSS -->
-    {{-- <style>
+    <style>
         :root {
             --primary-color: {{ $siteSetting->theme_color_primary ?? '#007bff' }};
             --secondary-color: {{ $siteSetting->theme_color_secondary ?? '#6c757d' }};
         }
-    </style> --}}
+    </style>
     @yield('customCss')
 
 
