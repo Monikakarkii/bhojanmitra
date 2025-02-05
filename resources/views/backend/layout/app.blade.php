@@ -15,6 +15,7 @@
     <link rel="stylesheet"
         href="{{ asset('adminlte/plugins/token_input_bootstrap/css/bootstrap-tokenfield.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('adminlte/plugins/sweetalert2/sweetalert2.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('adminlte/plugins/ekko-lightbox/ekko-lightbox.css') }}">
     <link rel="icon" type="image/png"
         href="{{ websiteInfo() && websiteInfo()->first() && websiteInfo()->app_logo ? asset('app_logo/' . websiteInfo()->app_logo) : asset('default/website.png') }}">
 
@@ -58,6 +59,7 @@
     <script src="{{ asset('adminlte/plugins/toastr/toastr.min.js') }}"></script>
     <script src="{{ asset('adminlte/plugins/token_input_bootstrap/bootstrap-tokenfield.min.js') }}"></script>
     <script src="{{ asset('adminlte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('adminlte/plugins/ekko-lightbox/ekko-lightbox.js') }}"></script>
     <!-- Select2 -->
     {{-- <script src="{{asset('adminlte/plugins/select2/js/select2.full.min.js')}}"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>

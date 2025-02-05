@@ -15,8 +15,9 @@ use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 
 Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+    return view('home');
+})->name('home');
+
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])
             ->name('login');
             Route::post('login', [AuthenticatedSessionController::class, 'store']);

@@ -63,7 +63,7 @@
                                             </a>
                                         </td>
                                         <td class="text-center">
-                                            <a href="{{ route('tables.edit', $table->id) }}">
+                                            <a href="{{ asset($table->qr_code) }} data-lightbox="{{$loop->iteration}}" data-title="{{$table->table_number}}">
                                                 <img src="{{ file_exists(public_path($table->qr_code)) ? asset($table->qr_code) : asset('default/no-image.png') }}"
                                                      alt="QR Code for {{ $table->table_number }}" title="QR Code for {{ $table->table_number }}" style="max-width: 80px; height: 80px;">
                                             </a>
@@ -104,6 +104,7 @@
 
 @section('customJs')
     <script>
+   
         $('#search').on('keyup', function() {
             search();
         });
