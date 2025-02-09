@@ -15,7 +15,7 @@
             <span class="ms-2 d-md-block" style="color: var(--text-color);">{{ $websiteInfo->app_name }}</span>
         </a>
 
-        @if(session()->has('user_table'))
+
             <!-- Hamburger Menu -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fas fa-bars" style="color: var(--text-color);"></i>
@@ -24,6 +24,7 @@
             <!-- Navbar Links -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    @if(session()->has('user_table'))
                     <li class="nav-item">
                         <a class="nav-link" href="" style="color: var(--text-color);">Home</a>
                         {{-- <a class="nav-link" href="{{ route('menu.home', ['tableNumber' => session('user_table')]) }}" style="color: var(--text-color);">Home</a> --}}
@@ -32,6 +33,7 @@
                         <a class="nav-link" href="" style="color: var(--text-color);">History</a>
                         {{-- <a class="nav-link" href="{{ route('menu.order.history') }}" style="color: var(--text-color);">History</a> --}}
                     </li>
+                    @endif
                     <li>
                         <button class="btn btn-secondary" id="theme-toggle">
                             <i id="theme-icon" class="fas fa-sun" style="color: var(--text-color);"></i>
@@ -39,6 +41,6 @@
                     </li>
                 </ul>
             </div>
-        @endif
+
     </div>
 </nav>
