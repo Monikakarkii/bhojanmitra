@@ -41,8 +41,8 @@ class Category extends Model
         });
     }
     // Many-to-many relationship with menu items
-    // public function menuItems()
-    // {
-    //     return $this->belongsToMany(MenuItem::class, 'category_menu_item');
-    // }
+    public function menuItems()
+    {
+        return $this->belongsToMany(MenuItem::class, 'category_menu_item');
+    }
 }

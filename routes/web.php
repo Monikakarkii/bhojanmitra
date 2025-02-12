@@ -14,6 +14,8 @@ use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 
+use App\Http\Controllers\MenuController;
+
 Route::get('/', function () {
     return view('home');
 })->name('home');
@@ -67,4 +69,12 @@ Route::prefix('admin')
 
         Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
+    });
+
+
+    Route::middleware(['user']) // No named parameter
+    ->name('menu.')
+    ->group(function () {
+        Route::get('/home/{tableNumber}/{category?}', [MenuController::class, 'index'])->name('home');
+        Route::get('/user-token', [MenuController::class, 'userToken'])->name('user.token');
     });
