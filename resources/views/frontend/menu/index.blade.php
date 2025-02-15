@@ -113,8 +113,8 @@
                     <div class="category-container">
                         <div class="d-flex justify-content-between align-items-center mb-4 border-bottom">
                             <h5 class="text-left">{{ $category->name }}</h5>
-                            {{-- <a href="{{ route('menu.viewAll', ['categorySlug' => $category->slug]) }}">View all</a> --}}
-                            <a href="">View all</a>
+                            <a href="{{ route('menu.viewAll', ['categorySlug' => $category->slug]) }}">View all</a>
+
                         </div>
 
                         @if (!$categorySlug)
@@ -123,24 +123,12 @@
                                 @foreach ($category->menuItems as $menuItem)
                                     <div class="item">
                                         <div class="card">
-                                            {{-- <a href="{{ route('menu.show', ['menuSlug' => $menuItem->slug]) }}">
-                                                <img src="{{ asset($menuItem->image) }}" class="card-img-top img-fluid"
-                                                    alt="{{ $menuItem->name }}" loading="lazy">
-                                            </a> --}}
-                                            <a href="">
+                                            <a href="{{ route('menu.show', ['menuSlug' => $menuItem->slug]) }}">
                                                 <img src="{{ asset($menuItem->image) }}" class="card-img-top img-fluid"
                                                     alt="{{ $menuItem->name }}" loading="lazy">
                                             </a>
                                             <div class="card-body">
-                                                {{-- <a href="{{ route('menu.show', ['menuSlug' => $menuItem->slug]) }}"
-                                                    class="text-decoration-none">
-                                                    <h6 class="card-title" style="color: var(--primary-color);">
-                                                        {{ \Illuminate\Support\Str::limit($menuItem->name, 43) }}
-                                                    </h6>
-                                                    <p class="card-text"><strong>Price:</strong> Rs{{ $menuItem->price }}
-                                                    </p>
-                                                </a> --}}
-                                                <a href=""
+                                                <a href="{{ route('menu.show', ['menuSlug' => $menuItem->slug]) }}"
                                                     class="text-decoration-none">
                                                     <h6 class="card-title" style="color: var(--primary-color);">
                                                         {{ \Illuminate\Support\Str::limit($menuItem->name, 43) }}
@@ -174,15 +162,7 @@
                                                     alt="{{ $menuItem->name }}" loading="lazy">
                                             </a>
                                             <div class="card-body">
-                                                {{-- <a href="{{ route('menu.show', ['menuSlug' => $menuItem->slug]) }}"
-                                                    class="text-decoration-none">
-                                                    <h6 class="card-title" style="color: var(--primary-color);">
-                                                        {{ \Illuminate\Support\Str::limit($menuItem->name, 43) }}
-                                                    </h6>
-                                                    <p class="card-text"><strong>Price:</strong> Rs{{ $menuItem->price }}
-                                                    </p>
-                                                </a> --}}
-                                                <a href=""
+                                                <a href="{{ route('menu.show', ['menuSlug' => $menuItem->slug]) }}"
                                                     class="text-decoration-none">
                                                     <h6 class="card-title" style="color: var(--primary-color);">
                                                         {{ \Illuminate\Support\Str::limit($menuItem->name, 43) }}

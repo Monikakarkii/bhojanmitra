@@ -112,4 +112,38 @@ class MenuController extends Controller
             return response()->json(['success' => true, 'token' => $newToken, 'message' => 'Welcome to Website Name!']);
         }
     }
+    public function show($menuSlug)
+    {
+
+        if (!session()->has('user_table')) {
+            return redirect()->route('home')->with('error', 'Session expired or invalid.');
+        }
+        else{
+            $menuItem = MenuItem::where('slug', $menuSlug)
+                ->where('availability', '1')
+                ->firstOrFail();
+
+            return view('frontend.menu.show', compact('menuItem'));
+        }
+    }
+
+    public function viewAll($categorySlug)
+    {
+        if (!session()->has('user_table')) {
+            return redirect()->route('home')->with('error', 'Session expired or invalid.');
+        }
+        else{
+            $category = Category::where('slug', $categorySlug)
+
+                ->where('status', 'active')
+                ->with(['menuItems' => function ($query) {
+                    $query->orderBy('name', 'asc'); // Order menu items alphabetically
+                }])
+                ->firstOrFail();
+
+            return view('frontend.menu.viewall', compact('category'));
+
+        }
+
+    }
 }

@@ -139,15 +139,15 @@
 @yield('content')
 
 <!-- Cart and Button Fixed to Right -->
-{{-- @if (session('user_table') && session('user_table_token') && Route::currentRouteName() !== 'menu.cart.view')
+ @if (session('user_table') && session('user_table_token') && Route::currentRouteName() !== 'menu.cart.view')
     <div class="cart-button-wrapper">
-        <a href="#" class="cart-icon">
         {{-- <a href="{{route('menu.cart.view')}}" class="cart-icon"> --}}
-            {{-- <i class="fas fa-shopping-cart"></i>
+        <a href="" class="cart-icon">
+         <i class="fas fa-shopping-cart"></i>
             <span class="badge" id="cart-count">{{ session('cart') ? count(session('cart')) : 0 }}</span>
         </a>
     </div>
-{{-- @endif --}} --
+@endif
 
 <!-- Footer -->
 @include('frontend.layout.footer')

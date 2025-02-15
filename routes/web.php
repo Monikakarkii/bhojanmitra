@@ -77,4 +77,6 @@ Route::prefix('admin')
     ->group(function () {
         Route::get('/home/{tableNumber}/{category?}', [MenuController::class, 'index'])->name('home');
         Route::get('/user-token', [MenuController::class, 'userToken'])->name('user.token');
+        Route::get('/menu/{menuSlug}', [MenuController::class, 'show'])->name('show');
+        Route::get('/view-all/{categorySlug}', [MenuController::class, 'viewAll'])->name('viewAll');
     });
