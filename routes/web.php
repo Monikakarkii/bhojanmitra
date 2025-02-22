@@ -16,6 +16,8 @@ use App\Http\Controllers\Auth\PasswordController;
 
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\FrontendOrderController;
+use App\Http\Controllers\HistoryController;
 
 Route::get('/', function () {
     return view('home');
@@ -84,4 +86,10 @@ Route::prefix('admin')
         Route::post('/cart-update', [CartController::class, 'updateCart'])->name('cart.update');
         Route::post('/cart-remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
         Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.view');
+
+        Route::post('/order/store', [FrontendOrderController::class, 'store'])->name('order.store');
+        Route::get('/payment/success', [FrontendOrderController::class, 'handleSuccess'])->name('payment.success');
+        Route::get('/payment/failure', [FrontendOrderController::class, 'handleFailure'])->name('payment.failure');
+
+        Route::get('/order-history', [HistoryController::class, 'index'])->name('order.history');
     });

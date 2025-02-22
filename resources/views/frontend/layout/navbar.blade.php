@@ -26,12 +26,10 @@
                 <ul class="navbar-nav ms-auto">
                     @if(session()->has('user_table'))
                     <li class="nav-item">
-                        <a class="nav-link" href="" style="color: var(--text-color);">Home</a>
-                        {{-- <a class="nav-link" href="{{ route('menu.home', ['tableNumber' => session('user_table')]) }}" style="color: var(--text-color);">Home</a> --}}
+                        <a class="nav-link" href="{{ route('menu.home', ['tableNumber' => session('user_table')]) }}" style="color: var(--text-color);">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="" style="color: var(--text-color);">History</a>
-                        {{-- <a class="nav-link" href="{{ route('menu.order.history') }}" style="color: var(--text-color);">History</a> --}}
+                        <a class="nav-link" href="{{ route('menu.order.history') }}" style="color: var(--text-color);">History</a>
                     </li>
                     @endif
                     <li>

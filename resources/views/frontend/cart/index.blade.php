@@ -63,8 +63,7 @@
 
             <!-- Order Review Modal -->
 
-            {{-- <form id="orderForm" action="{{ route('menu.order.store') }}" method="POST"> --}}
-                <form id="orderForm" action="#" method="POST">
+            <form id="orderForm" action="{{ route('menu.order.store') }}" method="POST">
                 @csrf
                 <div class="modal fade" id="orderReviewModal" tabindex="-1" aria-labelledby="orderReviewModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
