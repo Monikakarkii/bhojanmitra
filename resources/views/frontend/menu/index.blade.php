@@ -154,9 +154,9 @@
                                     <div class="col">
                                         <div class="card">
                                             {{-- <a href="{{ route('menu.show', ['menuSlug' => $menuItem->slug]) }}"> --}}
-                                                <img src="{{ asset($menuItem->image) }}" class="card-img-top img-fluid"
+                                                {{-- <img src="{{ asset($menuItem->image) }}" class="card-img-top img-fluid"
                                                     alt="{{ $menuItem->name }}" loading="lazy">
-                                            </a>
+                                            </a> --}}
                                             <a href="">
                                                 <img src="{{ asset($menuItem->image) }}" class="card-img-top img-fluid"
                                                     alt="{{ $menuItem->name }}" loading="lazy">

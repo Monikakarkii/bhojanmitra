@@ -15,6 +15,7 @@ use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\CartController;
 
 Route::get('/', function () {
     return view('home');
@@ -79,4 +80,8 @@ Route::prefix('admin')
         Route::get('/user-token', [MenuController::class, 'userToken'])->name('user.token');
         Route::get('/menu/{menuSlug}', [MenuController::class, 'show'])->name('show');
         Route::get('/view-all/{categorySlug}', [MenuController::class, 'viewAll'])->name('viewAll');
+        Route::post('/cart-add', [CartController::class, 'addToCart'])->name('cart.add');
+        Route::post('/cart-update', [CartController::class, 'updateCart'])->name('cart.update');
+        Route::post('/cart-remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
+        Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.view');
     });

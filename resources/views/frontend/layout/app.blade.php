@@ -139,11 +139,10 @@
 @yield('content')
 
 <!-- Cart and Button Fixed to Right -->
- @if (session('user_table') && session('user_table_token') && Route::currentRouteName() !== 'menu.cart.view')
+@if (session('user_table') && session('user_table_token') && Route::currentRouteName() !== 'menu.cart.view')
     <div class="cart-button-wrapper">
-        {{-- <a href="{{route('menu.cart.view')}}" class="cart-icon"> --}}
-        <a href="" class="cart-icon">
-         <i class="fas fa-shopping-cart"></i>
+        <a href="{{route('menu.cart.view')}}" class="cart-icon">
+            <i class="fas fa-shopping-cart"></i>
             <span class="badge" id="cart-count">{{ session('cart') ? count(session('cart')) : 0 }}</span>
         </a>
     </div>
@@ -196,30 +195,29 @@
         applyTheme(newTheme);
         localStorage.setItem('theme', newTheme);
     });
-    // $(document).on('click', '.add-to-cart', function () {
-    //     const id = $(this).data('id');
-    //     const name = $(this).data('name');
-    //     const price = $(this).data('price');
-    //     const image = $(this).data('image');
+    $(document).on('click', '.add-to-cart', function () {
+        const id = $(this).data('id');
+        const name = $(this).data('name');
+        const price = $(this).data('price');
+        const image = $(this).data('image');
 
-        // $.ajax({
-        //     url: "#",
-            // url: "",
-        //     type: "POST",
-        //     data: {
-        //         _token: "{{ csrf_token() }}",
-        //         id: id,
-        //         name: name,
-        //         price: price,
-        //         quantity: 1,
-        //         image: image
-        //     },
-        //     success: function (response) {
-        //         // Update cart count in the header
-        //         $('#cart-count').text(response.cartCount);
-        //     }
-        // });
-    // });
+        $.ajax({
+            url: "{{ route('menu.cart.add') }}",
+            type: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                id: id,
+                name: name,
+                price: price,
+                quantity: 1,
+                image: image
+            },
+            success: function (response) {
+                // Update cart count in the header
+                $('#cart-count').text(response.cartCount);
+            }
+        });
+    });
 </script>
 @yield('js')
 </body>

@@ -3,7 +3,7 @@
 @section('title', 'Cart')
 
 @section('content')
-    <div class="container mt-5 mb-auto" style="min-height: 70vh; display: flex; flex-direction: column;">
+    <div class="container mt-1 mb-auto" style="min-height: 70vh; display: flex; flex-direction: column;">
         <div class="mb-3 d-flex align-items-center justify-content-between">
             <a href="{{ url()->previous() }}" style="color: var(--primary-color); text-decoration: none;">
                 <i class="fas fa-arrow-left" style="font-size: 1.4rem;"></i>
@@ -13,7 +13,8 @@
         </div>
 
         @if ($cart && count($cart) > 0)
-            <table class="table mb-auto" style="color: var(--text-color); flex-grow: 1;">
+        <div class="tab-content table-responsive">
+            <table class="table mb-auto" style="color: var(--text-color); flex-grow: ;">
                 <thead>
                     <tr>
                         <th>Image</th>
@@ -29,22 +30,26 @@
                     @foreach ($cart as $id => $item)
                         <tr>
                             <td><img src="{{ asset($item['image']) }}" width="50"></td>
-                            <td>{{ $item['name'] }}</td>
+                            <td class="text-truncate" style="max-width: 150px;">
+                                {{ $item['name'] }}
+                            </td>
                             <td>Rs{{ $item['price'] }}</td>
                             <td>
                                 <input type="number" class="form-control update-quantity" style="width: 70px;"
                                     data-id="{{ $id }}" value="{{ $item['quantity'] }}" min="1">
                             </td>
                             <td>Rs{{ $item['price'] * $item['quantity'] }}</td>
-                            <td>
-                                <button class="btn btn-danger remove-from-cart"
-                                    data-id="{{ $id }}">Remove</button>
+                            <td class="text-center">
+                                <a href="javascript:void(0);" class="text-danger remove-from-cart align-items-center" data-id="{{ $id }}">
+                                    <i class="fas fa-times"></i>
+                                </a>
                             </td>
                         </tr>
                         @php $grandTotal += $item['price'] * $item['quantity']; @endphp
                     @endforeach
                 </tbody>
             </table>
+        </div>
 
             <!-- Add Note Section -->
             <div class="mt-3 mb-3">
@@ -58,7 +63,8 @@
 
             <!-- Order Review Modal -->
 
-            <form id="orderForm" action="{{ route('menu.order.store') }}" method="POST">
+            {{-- <form id="orderForm" action="{{ route('menu.order.store') }}" method="POST"> --}}
+                <form id="orderForm" action="#" method="POST">
                 @csrf
                 <div class="modal fade" id="orderReviewModal" tabindex="-1" aria-labelledby="orderReviewModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -178,27 +184,6 @@
                 toastr.error('Your cart is empty!');
                 return;
             }
-
-            // $.ajax({
-            //     url: "{{ route('menu.order.store') }}",
-            //     type: "POST",
-            //     data: {
-            //         _token: "{{ csrf_token() }}",
-            //         paymentMethod: paymentMethod,
-            //         cart: cart,
-            //         grandTotal: grandTotal,
-            //         note: cartNote
-            //     },
-            //     success: function(response) {
-            //         toastr.success(response.message + " Order ID: " + response.order_id);
-            //         // window.location.href ="{{ route('menu.order.history') }}";
-            //     },
-            //     error: function(response) {
-            //         console.log(response); //
-            //         toastr.error('Something went wrong!');
-            //         // window.location.reload();
-            //     }
-            // });
         });
     </script>
 @endsection
