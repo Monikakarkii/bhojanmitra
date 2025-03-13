@@ -8,7 +8,7 @@ use App\Models\Sale;
 use App\Models\UserToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Zerkxubas\EsewaLaravel\Facades\Esewa;
+
 use Dipesh79\LaravelKhalti\LaravelKhalti;
 
 class FrontendOrderController extends Controller
@@ -61,9 +61,12 @@ class FrontendOrderController extends Controller
     $order->notes = $request->note ?? null;
 
     // Retrieve or Create Customer
-    $customerToken = $request->session()->get('user_token');
-    $customer = UserToken::firstOrCreate(['token' => $customerToken]);
-    $order->customer_id = $customer->id;
+
+    $customerToken = session('user_token');
+    if ($customerToken) {
+        $customer = UserToken::firstOrCreate(['token' => $customerToken]);
+        $order->customer_id = $customer->id;
+    }
     $order->created_at = now()->setTimezone('Asia/Kathmandu');
     $order->save();
 

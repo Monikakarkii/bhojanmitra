@@ -13,6 +13,9 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\PasswordController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderItemController;
+use App\Http\Controllers\SalesController;
 
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\CartController;
@@ -49,6 +52,12 @@ Route::prefix('admin')
 
         Route::resource('menu-items', MenuItemController::class);
         Route::post('/menuitems/search', [MenuItemController::class, 'search'])->name('menu-items.search');
+
+        Route::resource('orders', OrderController::class)->except(['show']);
+        Route::post('order-items', [OrderItemController::class, 'store'])->name('order-items.store');
+
+        Route::get('/sales', [SalesController::class, 'index'])->name('sales.index');
+        Route::get('/sales/download', [SalesController::class, 'download'])->name('sales.download');
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -92,4 +101,5 @@ Route::prefix('admin')
         Route::get('/payment/failure', [FrontendOrderController::class, 'handleFailure'])->name('payment.failure');
 
         Route::get('/order-history', [HistoryController::class, 'index'])->name('order.history');
+        Route::get('/khalti/callback', [FrontendOrderController::class, 'khaltiCallback'])->name('khalti.callback');
     });

@@ -11,6 +11,7 @@ use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class TableController extends Controller
@@ -51,7 +52,6 @@ class TableController extends Controller
                 'status' => 'required|in:active,inactive',
             ]);
 
-
             // Create the new table entry
             $table = new Table();
             $table->table_number = $request->table_number;
@@ -90,21 +90,17 @@ class TableController extends Controller
 
             // Redirect or return a response
             return redirect()->route('tables.index');
-        } catch (Exception $e) {
-            // Log the error for debugging purposes
-            Log::error('Error creating table: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
-            ]);
-
-
-
-            // Flash an error message to the session
-            session()->flash('error', 'An error occurred while creating the table. Please try again.');
-
-            // Redirect back to the form
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Handle database errors specifically
+            session()->flash('error', 'Database error: ' . $e->getMessage());
+            return redirect()->back()->withInput();
+        } catch (\Exception $e) {
+            // Handle all other errors
+            session()->flash('error', 'Error: ' . $e->getMessage());
             return redirect()->back()->withInput();
         }
     }
+
 
 
     /**
@@ -146,7 +142,7 @@ class TableController extends Controller
             // Validate the incoming request
             $request->validate([
                 'table_number' => 'required|max:255|unique:tables,table_number,' . $id, // Ensures the table number is unique except for the current table
-                'status' => 'required|in:active,inactive',
+                'status' => 'required|in:available,occupied',
             ]);
 
             // Find the table by ID
@@ -197,6 +193,7 @@ class TableController extends Controller
             Log::error('Error updating table: ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString(),
             ]);
+
             // Flash an error message to the session
             session()->flash('error', 'An error occurred while updating the table. Please try again.');
 
@@ -240,7 +237,7 @@ class TableController extends Controller
             ]);
 
             // Flash an error message to the session
-            session()->flash('error', 'An error occurred while deleting the table. Please try again.');
+            session()->flash('error', 'Error: ' . $e->getMessage());
 
             // Redirect back to the tables index page
             return redirect()->route('tables.index');
