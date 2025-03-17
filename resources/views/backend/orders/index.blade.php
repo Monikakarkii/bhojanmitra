@@ -19,6 +19,7 @@
                                 <option value="">All Statuses</option>
                                 <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
                                 <option value="preparing" {{ request('status') == 'preparing' ? 'selected' : '' }}>Preparing</option>
+                                <option value="ready_to_serve" {{ request('status') == 'ready_to_serve' ? 'selected' : '' }}>Ready to Serve</option>
                                 <option value="paid" {{ request('status') == 'paid' ? 'selected' : '' }}>Paid</option>
                                 <option value="canceled" {{ request('status') == 'canceled' ? 'selected' : '' }}>Canceled</option>
                             </select>
@@ -57,8 +58,7 @@
                         @forelse ($orders as $order)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>Table {{ optional($order->table)->table_number ?? 'N/A' }}</td>
-
+                                <td>Table {{ $order->table_id }}</td>
                                 <td class="text-center">{{ $order->customer_id }}</td>
                                 <td>
                                     <span class="badge badge-{{ $order->order_status == 'paid' ? 'success' : ($order->order_status == 'canceled' ? 'danger' : 'warning') }}">
@@ -67,15 +67,18 @@
                                 </td>
                                 <td>{{ ucfirst($order->payment_method) }}</td>
                                 <td>${{ number_format($order->total_amount, 2) }}</td>
-                                <td>{{ $order->created_at->format('Y-m-d H:i:s') }}</td>
+                                <td>{{ $order->created_at->format('Y-m-d h:i A') }}</td>
+
                                 <td>
 {{--                                    <a href="{{ route('orders.show', $order->id) }}" class="btn btn-info btn-sm">View</a>--}}
                                     <a href="#" class="btn btn-info btn-sm">View</a>
                                     <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                    <form action="{{ route('orders.destroy', $order->id) }}" method="POST" style="display:inline-block;">
+                                    <a class="btn btn-danger btn-sm" href="#" onclick="confirmDelete({{ $order->id }})">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </a>
+                                    <form id="delete-form-{{ $order->id }}" action="{{ route('orders.destroy', $order->id) }}" method="POST" style="display: none;">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
                                     </form>
                                 </td>
                             </tr>

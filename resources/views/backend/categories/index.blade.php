@@ -32,14 +32,12 @@
                     </div>
 
                     <div class="card-body">
-                        <div>
-                            <!-- Search Input -->
+                        <div class="table-responsive">
                             <label>
                                 <input type="search" id="search" class="form-control"
                                        placeholder="Search categories...">
                             </label>
 
-                            <!-- Table -->
                             <table class="table table-bordered mt-3" id="categoriesTable">
                                 <thead>
                                 <tr class="text-center">
@@ -60,7 +58,7 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>
                                             @if ($category->logo)
-                                                <img src="{{ asset($category->logo) }}" alt="Logo" style="max-width: 45px; max-height: 45px;">
+                                                <img src="{{ asset($category->logo) }}" alt="Logo" class="img-fluid" style="max-width: 45px; max-height: 45px;">
                                             @else
                                                 <span>No Logo</span>
                                             @endif
@@ -111,8 +109,6 @@
                                 @endforelse
                                 </tbody>
                             </table>
-
-                            <!-- Pagination -->
                             {{ $categories->links() }}
                         </div>
                     </div>
@@ -124,15 +120,12 @@
 
 @section('customJs')
     <script>
-        // Handle search input keyup event
         $('#search').on('keyup', function() {
             search();
         });
 
         function search() {
             var keyword = $('#search').val();
-
-            // Make an AJAX POST request to the search route
             $.post('{{ route("categories.search") }}', {
                 _token: $('meta[name="csrf-token"]').attr('content'),
                 searchTerm: keyword,
@@ -141,17 +134,13 @@
             });
         }
 
-        // Update table with search results
         function updateTable(data) {
             let html = '';
             if (data.categories.data.length === 0) {
                 html += `<tr><td colspan="9" class="text-center">No categories found.</td></tr>`;
             } else {
                 data.categories.data.forEach(function(category, index) {
-                    // Fallback for logo
                     let logoUrl = category.logo ? '{{ asset(':logo') }}'.replace(':logo', category.logo) : window.location.origin + '/default/no-image.png';
-
-                    // Dynamic edit and delete URLs
                     let editUrl = '{{ route("categories.edit", ":id") }}'.replace(':id', category.id);
                     let deleteUrl = '{{ route("categories.destroy", ":id") }}'.replace(':id', category.id);
 
@@ -159,7 +148,7 @@
                 <tr class="text-center">
                     <td>${index + 1}</td>
                     <td>
-                        <img src="${logoUrl}" alt="Logo" style="max-width: 45px; max-height: 45px;" />
+                        <img src="${logoUrl}" alt="Logo" class="img-fluid" style="max-width: 45px; max-height: 45px;" />
                     </td>
                     <td>${category.name}</td>
                     <td>
@@ -188,11 +177,10 @@
                         </button>
                         <form id="delete-form-${category.id}" action="${deleteUrl}" method="POST" style="display: none;">
                             @csrf
-                    @method('DELETE')
-                    </form>
-                </td>
-            </tr>
-`;
+                            @method('DELETE')
+                        </form>
+                    </td>
+                </tr>`;
                 });
             }
             $('#categoriesTable tbody').html(html);

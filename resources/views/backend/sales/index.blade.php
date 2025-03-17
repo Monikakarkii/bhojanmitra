@@ -79,7 +79,11 @@
                                     <td>{{ $sale->order_id }}</td>
                                     <td>{{ $sale->total_amount }}</td>
                                     <td>{{ ucfirst($sale->payment_method) }}</td>
-                                    <td>{{ $sale->completed_at }}</td>
+                                    <td>
+                                        <i class="fas fa-clock"></i>
+                                        {{ \Carbon\Carbon::parse($sale->completed_at)->format('Y-m-d h:i A') }}
+                                    </td>
+
                                 </tr>
                             @empty
                                 <tr>

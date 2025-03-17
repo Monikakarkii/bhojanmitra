@@ -28,64 +28,64 @@ class MenuItemController extends Controller
         return view('backend.menuitems.create', compact('categories'));
     }
     public function store(Request $request)
-    {
+{
+    try {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'categories' => 'required|array',
             'categories.*' => 'exists:categories,id',
-            'tags' => 'nullable|string', // Ensure tags are optional
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', // Optional image validation
+            'tags' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:5048',
             'description' => 'nullable|string',
             'availability' => 'required|boolean',
         ]);
 
-        // Handle the image upload if provided
+        // Default image path if no image is uploaded
+        $imagePath = null;
+
         if ($request->hasFile('image')) {
-            // Get the uploaded file
             $image = $request->file('image');
-
-            // Generate a unique name for the image file
             $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $storagePath = public_path('menu-items');
 
-            // Define the storage path inside the 'public' folder (accessible via public URL)
-            $storagePath = public_path('menu-items');  // Using 'menu-items' folder for storage
-
-            // Create the directory if it doesn't exist
-            if (!file_exists($storagePath)) {
-                if (!mkdir($storagePath, 0775, true) && !is_dir($storagePath)) {
-                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $storagePath));
-                }
+            // Create directory if it doesn't exist
+            if (!file_exists($storagePath) && !mkdir($storagePath, 0775, true) && !is_dir($storagePath)) {
+                throw new \RuntimeException("Failed to create directory: $storagePath");
             }
 
-            // Move the uploaded file to the storage path with the generated name
+            // Move file and store the relative path
             $image->move($storagePath, $imageName);
-
-            // Save the file path (relative to the 'public' folder)
             $imagePath = 'menu-items/' . $imageName;
         }
-        // Create the menu item
+
+        // Create menu item
         $menuItem = MenuItem::create([
             'name' => $validated['name'],
             'price' => $validated['price'],
             'description' => $validated['description'],
-            'availability' => (bool) $validated['availability'],  // Ensure availability is stored as a boolean
+            'availability' => (bool) $validated['availability'],
             'image' => $imagePath,
         ]);
 
         // Sync categories
         $menuItem->categories()->sync($validated['categories']);
 
-        // Handle tags - convert the comma-separated string to an array and sync
+        // Handle tags
         if ($request->has('tags')) {
-            $tagIds = collect(explode(',', $request->tags))->map(function ($tag) {
-                return Tag::firstOrCreate(['name' => trim($tag)])->id;
-            });
+            $tagIds = collect(explode(',', $request->tags))->map(fn($tag) =>
+                Tag::firstOrCreate(['name' => trim($tag)])->id
+            );
             $menuItem->tags()->sync($tagIds);
         }
 
         return redirect()->route('menu-items.index')->with('success', 'Menu item created successfully!');
+    } catch (\Exception $e) {
+        \Log::error('Error creating menu item: ' . $e->getMessage());
+        return back()->withInput()->with('error', 'Error: ' . $e->getMessage());
     }
+}
+
     public function edit($id)
     {
         // Fetch the existing menu item

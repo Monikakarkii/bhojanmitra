@@ -38,64 +38,65 @@
                                 <input type="search" id="search" class="form-control" placeholder="Search menu items...">
                             </label>
 
-                            <!-- Table -->
-                            <table class="table table-bordered mt-3" id="menuItemsTable">
-                                <thead>
-                                <tr class="text-center">
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Price</th>
-                                    <th>Status</th>
-                                    <th>Image</th>
-                                    <th>Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @forelse($menuItems as $menuItem)
+                            <!-- Responsive Table -->
+                            <div class="table-responsive">
+                                <table class="table table-bordered mt-3" id="menuItemsTable">
+                                    <thead>
                                     <tr class="text-center">
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $menuItem->name }}</td>
-                                        <td>${{ number_format($menuItem->price, 2) }}</td>
-                                        <td>
-                                        
-                                            @if($menuItem->availability === 1)
-                                                <i class="fas fa-check-circle text-success"></i> Available
-                                            @else
-                                                <i class="fas fa-times-circle text-danger"></i> Out of Stock
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($menuItem->image)
-                                                <img src="{{ asset($menuItem->image) }}" alt="Menu Item Image"
-                                                     style="max-width: 65px; max-height: 65px;">
-                                            @else
-                                                <span>No Image</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-warning btn-sm"
-                                               href="{{ route('menu-items.edit', $menuItem) }}">
-                                                <i class="fas fa-pencil-alt"></i> Edit
-                                            </a>
-                                            <button class="btn btn-danger btn-sm"
-                                                    onclick="confirmDelete({{ $menuItem->id }})">
-                                                <i class="fas fa-trash"></i> Delete
-                                            </button>
-                                            <form id="delete-form-{{ $menuItem->id }}"
-                                                  action="{{ route('menu-items.destroy', $menuItem) }}" method="POST"
-                                                  style="display: none;">
-                                                @csrf
-                                                @method('DELETE')
-                                            </form>
-                                        </td>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                        <th>Image</th>
+                                        <th>Actions</th>
                                     </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="6" class="text-center">No menu items found.</td>
-                                    </tr>
-                                @endforelse
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                    @forelse($menuItems as $menuItem)
+                                        <tr class="text-center">
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $menuItem->name }}</td>
+                                            <td>${{ number_format($menuItem->price, 2) }}</td>
+                                            <td>
+                                                @if($menuItem->availability === 1)
+                                                    <i class="fas fa-check-circle text-success"></i> Available
+                                                @else
+                                                    <i class="fas fa-times-circle text-danger"></i> Out of Stock
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($menuItem->image)
+                                                    <img src="{{ asset($menuItem->image) }}" alt="Menu Item Image"
+                                                         class="img-fluid" style="max-width: 65px; max-height: 65px;">
+                                                @else
+                                                    <span>No Image</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-warning btn-sm"
+                                                   href="{{ route('menu-items.edit', $menuItem) }}">
+                                                    <i class="fas fa-pencil-alt"></i> Edit
+                                                </a>
+                                                <button class="btn btn-danger btn-sm"
+                                                        onclick="confirmDelete({{ $menuItem->id }})">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </button>
+                                                <form id="delete-form-{{ $menuItem->id }}"
+                                                      action="{{ route('menu-items.destroy', $menuItem) }}" method="POST"
+                                                      style="display: none;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="6" class="text-center">No menu items found.</td>
+                                        </tr>
+                                    @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
 
                             <!-- Pagination -->
                             {{ $menuItems->links() }}
@@ -122,7 +123,7 @@
                 _token: $('meta[name="csrf-token"]').attr('content'),
                 searchTerm: keyword,
             }, function(data) {
-                //eror handling
+                // Error handling
                 if (data.error) {
                     alert(data.error);
                     return;
@@ -133,7 +134,6 @@
 
         // Update table with search results
         function updateTable(data) {
-
             let html = '';
             if (data.menuItems.data.length === 0) {
                 html += `<tr><td colspan="6" class="text-center">No menu items found.</td></tr>`;
@@ -155,7 +155,7 @@
                         `<i class="fas fa-times-circle text-danger"></i> Out of Stock`}
                             </td>
                             <td>
-                                <img src="${imageUrl}" alt="Menu Item Image" style="max-width: 65px; max-height: 65px;" />
+                                <img src="${imageUrl}" alt="Menu Item Image" class="img-fluid" style="max-width: 65px; max-height: 65px;" />
                             </td>
                             <td>
                                 <a class="btn btn-warning btn-sm" href="${editUrl}">
@@ -166,10 +166,10 @@
                                 </button>
                                 <form id="delete-form-${menuItem.id}" action="${deleteUrl}" method="POST" style="display: none;">
                                     @csrf
-                    @method('DELETE')
-                    </form>
-                </td>
-            </tr>`;
+                                    @method('DELETE')
+                                </form>
+                            </td>
+                        </tr>`;
                 });
             }
             $('#menuItemsTable tbody').html(html);
