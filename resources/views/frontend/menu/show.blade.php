@@ -67,10 +67,10 @@
                         </p>
 
                         <!-- Tags Section -->
-                        <div class="d-flex align-items-center m-1">
+                        <div class="d-flex flex-wrap align-items-center mt-2 mb-2">
                             <i class="fas fa-tag me-2"></i>
                             @foreach($menuItem->tags as $tag)
-                                <span class="badge bg-secondary mx-1">{{ $tag->name }}</span>
+                                <span class="badge bg-secondary mx-1 px-2 py-1 mb-1">{{ $tag->name }}</span>
                             @endforeach
                         </div>
 
