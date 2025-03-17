@@ -17,12 +17,12 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            {{-- <img src="{{ websiteInfo()->app_logo ? asset('app_logo/' . websiteInfo()->app_logo) : asset('default/no-image.png') }}"
-                class='img-circle elevation-2' width="80" height="80" alt=""> --}}
+            <img src="{{ websiteInfo()->app_logo ? asset('app_logo/' . websiteInfo()->app_logo) : asset('default/no-image.png') }}"
+                class='img-circle elevation-2' width="80" height="80" alt="">
             <br>
-            {{-- <a href="{{ route('login') }}"><b>{{ websiteInfo() ? websiteInfo()->app_name : 'Default App Name' }}</b></a> --}}
-            {{-- <a href="{{ route('login') }}"><b>{{ websiteInfo() ? websiteInfo()->app_name : 'Default App Name' }}</b></a> --}}
-            <a href="{{ route('login') }}"><b>Bhojan Mitra</b></a>
+            <a href="{{ route('login') }}"><b>{{ websiteInfo() ? websiteInfo()->app_name : 'Default App Name' }}</b></a>
+           
+
         </div>
         <!-- /.login-logo -->
         <div class="card">

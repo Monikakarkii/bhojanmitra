@@ -16,7 +16,11 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\SalesController;
-
+use App\Models\MenuItem;
+use App\Models\Order;
+use App\Models\Table;
+use Carbon\Carbon;
+use App\Models\Sale;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrontendOrderController;
@@ -36,10 +40,13 @@ Route::get('/login', [AuthenticatedSessionController::class, 'create'])
 Route::prefix('admin')
 ->middleware('admin')
 ->group(function () {
-        Route::get('/dashboard', function () {
-
-            return view('backend.dashboard');
-        })->name('dashboard');
+    Route::get('/dashboard', function () {
+        $menuItemCount = MenuItem::count(); // Get the count directly from the database
+        $tablesCount = Table::count();
+        $todaySales = Sale::whereDate('completed_at', Carbon::today())->sum('total_amount');
+        $orders = Order::where('order_status', 'pending')->latest()->take(5)->get();
+        return view('backend.dashboard', compact('menuItemCount', 'tablesCount', 'orders','todaySales'));
+    })->name('dashboard');
 
         Route::get('site-settings', [SiteSettingController::class, 'index'])->name('site-settings.index');
         Route::post('site-settings', [SiteSettingController::class, 'store'])->name('site-settings.create');
@@ -97,9 +104,16 @@ Route::prefix('admin')
         Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.view');
 
         Route::post('/order/store', [FrontendOrderController::class, 'store'])->name('order.store');
-        Route::get('/payment/success', [FrontendOrderController::class, 'handleSuccess'])->name('payment.success');
-        Route::get('/payment/failure', [FrontendOrderController::class, 'handleFailure'])->name('payment.failure');
 
         Route::get('/order-history', [HistoryController::class, 'index'])->name('order.history');
-        Route::get('/khalti/callback', [FrontendOrderController::class, 'khaltiCallback'])->name('khalti.callback');
+        // For POST requests
+        Route::post('/callback', [FrontendOrderController::class, 'verify'])->name('payment.callback.post');
+
+        // For GET requests
+        Route::get('/callback', [FrontendOrderController::class, 'verify'])->name('payment.callback.get');
+
+
+
+
+
     });

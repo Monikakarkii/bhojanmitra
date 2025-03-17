@@ -27,52 +27,54 @@
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
                     <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                {{-- <h3 >{{ $menuItemCount }}</h3> <!-- Total Menu Items --> --}}
-                                <h3 >10</h3> <!-- Total Menu Items -->
+                        <!-- Small box -->
+                        <div class="small-box bg-gradient-info shadow-lg">
+                            <div class="inner ">
+                                <h3 class="font-weight-bold">{{ $menuItemCount }}</h3>
                                 <p>Menu Items</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-bag"></i>
+                                <i class="fas fa-utensils fa-3x"></i> <!-- Changed Icon -->
                             </div>
-                            {{-- <a href="{{route('menu-items.index')}}" class="small-box-footer">View Menu item.. <i class="fas fa-arrow-circle-right"></i></a> --}}
-                            <a href="#" class="small-box-footer">View Menu item.. <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="{{route('menu-items.index')}}" class="small-box-footer">
+                                View Menu Item <i class="fas fa-arrow-circle-right"></i>
+                            </a>
                         </div>
                     </div>
                     <!-- ./col -->
                     <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-success">
-                            <div class="inner">
-                                {{-- <h3>{{$tablesCount}}</h3> --}}
-                                <h3>5</h3>
+                        <!-- Small box -->
+                        <div class="small-box bg-gradient-success shadow-lg">
+                            <div class="inner ">
+                                <h3 class="font-weight-bold">{{$tablesCount}}</h3>
                                 <p>Tables</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
+                                <i class="fas fa-chair fa-3x"></i> <!-- Changed Icon -->
                             </div>
-                            {{-- <a href="{{route('tables.index')}}" class="small-box-footer">View all table <i class="fas fa-arrow-circle-right"></i></a> --}}
-                            <a href="#" class="small-box-footer">View Menu item.. <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="{{route('tables.index')}}" class="small-box-footer">
+                                View All Tables <i class="fas fa-arrow-circle-right"></i>
+                            </a>
                         </div>
                     </div>
                     <!-- ./col -->
                     <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-warning">
+                        <!-- Small box -->
+                        <div class="small-box bg-gradient-warning shadow-lg">
                             <div class="inner">
-                                <h3>44</h3>
-                                <p>User Registrations</p>
+                                <h3 class="font-weight-bold">Rs. {{ number_format($todaySales, 2) }}</h3>
+                                <p>Today's Sales</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-person-add"></i>
+                                <i class="fas fa-coins fa-3x"></i> <!-- Changed Icon -->
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="{{ route('sales.index') }}" class="small-box-footer">
+                                More Info <i class="fas fa-arrow-circle-right"></i>
+                            </a>
                         </div>
                     </div>
                     <!-- ./col -->
-                    <div class="col-lg-3 col-6">
+                    {{-- <div class="col-lg-3 col-6">
                         <!-- small box -->
                         <div class="small-box bg-danger">
                             <div class="inner">
@@ -84,7 +86,7 @@
                             </div>
                             <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
-                    </div>
+                    </div> --}}
                     <!-- ./col -->
                 </div>
                 <!-- /.row -->
@@ -101,8 +103,7 @@
                                     Orders
                                 </h3>
                                 <div class="card-tools">
-                                    {{-- <a href="{{ route('orders.index') }}" class=" ml-2"> --}}
-                                        <a href="#" class=" ml-2">
+                                    <a href="{{ route('orders.index') }}" class=" ml-2">
                                         <i class="fas fa-red o"></i> View All Orders
                                     </a>
                                 </div>
@@ -112,7 +113,7 @@
                                     <!-- Latest Orders -->
                                     <div class="tab-pane active" id="latest-orders" style="position: relative; height: auto;">
                                         <h5>Latest 5 Orders</h5>
-                                        {{-- <ul class="list-group">
+                                        <ul class="list-group">
                                             @forelse($orders as $order)
                                                 <li class="list-group-item">
                                                     <div>
@@ -137,7 +138,7 @@
                                             @empty
                                                 <li class="list-group-item text-center text-muted">No recent orders available</li>
                                             @endforelse
-                                        </ul> --}}
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
