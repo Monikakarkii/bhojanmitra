@@ -89,7 +89,7 @@
                                     <select id="paymentMethod" name="paymentMethod" class="form-select"
                                         style="color: var(--text-color); background-color: var(--background-color)">
                                         <option value="cash">Cash</option>
-                                        <option value="online">Online (eSewa)</option>
+                                        <option value="online">Online (khalti)</option>
                                     </select>
                                 </div>
                             </div>

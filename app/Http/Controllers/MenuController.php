@@ -51,7 +51,9 @@ class MenuController extends Controller
                 $homeCategories = Category::where('status', 'active')
                     ->where('show_on_home', true)
                     ->orderBy('home_index')
-                    ->with('menuItems') // Get all menu items without limitation
+                    ->with(['menuItems' => function ($query) {
+                        $query->take(8); // Limit to 8 menu items
+                    }])
                     ->get();
             }
 

@@ -106,11 +106,11 @@ Route::prefix('admin')
         Route::post('/order/store', [FrontendOrderController::class, 'store'])->name('order.store');
 
         Route::get('/order-history', [HistoryController::class, 'index'])->name('order.history');
-        // For POST requests
-        Route::post('/callback', [FrontendOrderController::class, 'verify'])->name('payment.callback.post');
+           // For POST requests
+           Route::post('/callback', [FrontendOrderController::class, 'verify'])->name('payment.callback.post');
 
-        // For GET requests
-        Route::get('/callback', [FrontendOrderController::class, 'verify'])->name('payment.callback.get');
+           // For GET requests
+          Route::get('/callback', [FrontendOrderController::class, 'verify'])->name('payment.callback.get');
 
 
 
