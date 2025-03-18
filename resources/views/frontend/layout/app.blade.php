@@ -14,7 +14,8 @@
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
     <!-- Add Playfair Display font -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;700&display=swap" rel="stylesheet">
+
 
     <style>
         /* Define default theme variables */
@@ -36,7 +37,7 @@
         body {
             background-color: var(--background-color);
             color: var(--text-color);
-            font-family: 'Playfair Display', serif; /* Apply Playfair Display font */
+            font-family: 'Jost', sans-serif; /* Apply Jost font */
         }
 
         .bg-background {
@@ -85,7 +86,7 @@
         .logo-section h1 {
             font-size: 2rem;
             font-weight: 700;
-            font-family: 'Playfair Display', serif; /* Use Playfair Display */
+            font-family: 'Jost', sans-serif; /* Apply Jost font */
             color: var(--text-color);
             margin-bottom: 0;
         }
@@ -93,12 +94,12 @@
         .main-content h2 {
             font-size: 2rem;
             font-weight: 600;
-            font-family: 'Playfair Display', serif; /* Use Playfair Display */
+            font-family: 'Jost', sans-serif; /* Apply Jost font */
         }
 
         .quote-text {
             font-style: italic;
-            font-family: 'Playfair Display', serif; /* Use Playfair Display */
+            font-family: 'Jost', sans-serif; /* Apply Jost font */
             color: var(--muted-color);
             margin-top: 20px;
         }

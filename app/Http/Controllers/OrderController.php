@@ -32,6 +32,26 @@ class OrderController extends Controller
 
         return view('backend.orders.index', compact('orders'));
     }
+    public function destroy($id)
+    {
+        $order = Order::findOrFail($id);
+
+        // Store order details before deleting
+        $deletedOrder = "Order #{$order->id} (Table: {$order->table_id}, Amount: Rs.{$order->total_amount})";
+
+        // Optional: Prevent deletion of orders that are being prepared or served
+        if (in_array($order->order_status, ['preparing', 'ready_to_serve'])) {
+            return redirect()->back()->with('error', 'Cannot delete an ongoing order.');
+        }
+
+        // Delete related order items first
+        $order->items()->delete(); // Ensure orderItems() relation is defined in Order model
+
+        // Now delete the order
+        $order->delete();
+
+        return redirect()->route('orders.index')->with('success', "$deletedOrder has been deleted successfully.");
+    }
 
 
 

@@ -77,7 +77,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $sale->order_id }}</td>
-                                    <td>{{ $sale->total_amount }}</td>
+                                    <td>Rs.{{ $sale->total_amount }}</td>
                                     <td>{{ ucfirst($sale->payment_method) }}</td>
                                     <td>
                                         <i class="fas fa-clock"></i>
