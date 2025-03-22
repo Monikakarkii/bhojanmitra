@@ -16,18 +16,17 @@ class SalesController extends Controller
      */
     public function index(Request $request)
     {
-        // Filter parameters
+        // Filter sales records based on payment_method, pay_status, and date range
         $paymentMethod = $request->input('payment_method');
-        $payStatus = 1; // Always filter for paid orders
+        $payStatus = $request->input('pay_status'); // New filter for payment status
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
 
-        // Fetch sales where orders have pay_status = 1
-        $sales = Sale::whereHas('order', function ($query) use ($payStatus) {
-                $query->where('pay_status', $payStatus);
-            })
-            ->when($paymentMethod, function ($query) use ($paymentMethod) {
+        $sales = Sale::when($paymentMethod, function ($query) use ($paymentMethod) {
                 return $query->where('payment_method', $paymentMethod);
+            })
+            ->when(!is_null($payStatus), function ($query) use ($payStatus) { // Filter for paid/unpaid orders
+                return $query->where('pay_status', $payStatus);
             })
             ->when($startDate, function ($query) use ($startDate) {
                 return $query->whereDate('completed_at', '>=', $startDate);
@@ -38,9 +37,8 @@ class SalesController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('backend.sales.index', compact('sales', 'paymentMethod', 'startDate', 'endDate'));
+        return view('backend.sales.index', compact('sales', 'paymentMethod', 'payStatus', 'startDate', 'endDate'));
     }
-
 
     /**
      * Download sales records as a CSV file with filter.
