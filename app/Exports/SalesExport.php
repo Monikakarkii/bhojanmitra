@@ -4,23 +4,33 @@ namespace App\Exports;
 
 use App\Models\Sale;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class SalesExport implements FromCollection
+class SalesExport implements FromCollection, WithHeadings
 {
-    public function __construct($paymentMethod = null, $startDate = null, $endDate = null)
-{
-    $this->paymentMethod = $paymentMethod;
-    $this->startDate = $startDate;
-    $this->endDate = $endDate;
-}
-    /**
-    * @return \Illuminate\Support\Collection
-    */
+    protected $paymentMethod, $payStatus, $startDate, $endDate;
+
+    public function __construct($paymentMethod, $payStatus, $startDate, $endDate)
+    {
+        $this->paymentMethod = $paymentMethod;
+        $this->payStatus = $payStatus;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+    }
+
     public function collection()
     {
-        if ($this->paymentMethod || $this->startDate || $this->endDate) {
-            return Sale::when($this->paymentMethod, function ($query) {
+        return Sale::with('order') // Ensure order relationship is loaded
+            ->whereHas('order', function ($query) {
+                $query->where('pay_status', 1); // Filtering from the orders table
+            })
+            ->when($this->paymentMethod, function ($query) {
                 return $query->where('payment_method', $this->paymentMethod);
+            })
+            ->when(!is_null($this->payStatus), function ($query) {
+                return $query->whereHas('order', function ($query) {
+                    return $query->where('pay_status', $this->payStatus);
+                });
             })
             ->when($this->startDate, function ($query) {
                 return $query->whereDate('completed_at', '>=', $this->startDate);
@@ -28,9 +38,18 @@ class SalesExport implements FromCollection
             ->when($this->endDate, function ($query) {
                 return $query->whereDate('completed_at', '<=', $this->endDate);
             })
-            ->get(['order_id', 'total_amount', 'payment_method', 'completed_at']);
-        } else {
-            return Sale::all(['order_id', 'total_amount', 'payment_method', 'completed_at']);
-        }
+            ->latest()
+            ->get(['id', 'order_id', 'payment_method', 'total_amount', 'completed_at']); // Removed `pay_status`
+    }
+
+    public function headings(): array
+    {
+        return [
+            'ID',
+            'Order ID',
+            'Payment Method',
+            'Total Amount',
+            'Completed At',
+        ];
     }
 }
