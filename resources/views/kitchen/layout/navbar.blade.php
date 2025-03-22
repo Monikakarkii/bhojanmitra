@@ -7,8 +7,18 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
     </ul>
+
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
+
+        <!-- Show "Back to Admin Dashboard" button only for Admins -->
+        @if (Auth::user()->role == 'admin')
+            <li class="nav-item">
+                <a href="{{ route('dashboard') }}" class="btn btn-secondary mr-3">
+                    <i class="fas fa-arrow-left"></i> Back to Admin Dashboard
+                </a>
+            </li>
+        @endif
 
         <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
@@ -18,7 +28,7 @@
 
         <li class="nav-item dropdown">
             <a class="nav-link p-0 pr-3" data-toggle="dropdown" href="#">
-                @if (Auth::user()->role == 'kitchen')
+                @if (Auth::user()->role == 'kitchen' || Auth::user()->role == 'admin')
                     <img src="{{ asset('default/chef.png') }}" class='img-circle elevation-2' width="40"
                         height="40" alt="">
                 @else
@@ -29,7 +39,6 @@
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-3">
                 <h4 class="h4 mb-0"><strong>{{ Auth::user()->name }}</strong></h4>
                 <div class="mb-3">{{ Auth::user()->email }}</div>
-             
 
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item text-danger"
@@ -44,4 +53,3 @@
         </li>
     </ul>
 </nav>
-

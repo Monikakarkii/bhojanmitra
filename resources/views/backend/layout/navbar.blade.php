@@ -7,11 +7,21 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
     </ul>
+
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
+        <!-- Add Switch to Kitchen Dashboard Button (Visible Only to Admin) -->
+        @if (Auth::user()->role == 'admin')
+            <li class="nav-item">
+                <a href="{{ route('kitchen-dashboard') }}" class="btn btn-primary mr-3">
+                    <i class="fas fa-utensils"></i> Go to Kitchen Dashboard
+                </a>
+            </li>
+        @endif
+
+        <!-- Profile Dropdown -->
         <li class="nav-item dropdown">
             <a class="nav-link p-0 pr-3" data-toggle="dropdown" href="#">
-
                 <img src="{{ websiteInfo()->first()->logo ? asset('default/admin.png' . websiteInfo()->first()->logo) : asset('default/admin.png') }}"
                     class="img-circle elevation-2" width="40" height="40" alt="">
             </a>
@@ -31,19 +41,16 @@
 
                 <!-- Logout Form -->
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                <form id="logout-form" action="#" method="POST" style="display: none;">
                     @csrf
                 </form>
             </div>
         </li>
-
 
         <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>
             </a>
         </li>
-
 
     </ul>
 </nav>
