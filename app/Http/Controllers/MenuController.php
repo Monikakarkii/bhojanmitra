@@ -72,47 +72,43 @@ class MenuController extends Controller
 
 
     public function userToken(Request $request)
-
     {
-        if (session()->has('user_token')) {
-            //delete the user_token session
-            $request->session()->forget('user_token');
-
-        }
-        $token = $request->query('token'); // Retrieve the token from the query parameters
-
+        // Retrieve the token from request
+        $token = $request->query('token');
 
         if ($token) {
-            // Token provided: check its validity
-            $user = UserToken::where('token', $token)->first();
-            if ($user) {
-                // Valid token: return welcome back message
-                if (session()->has('user_token')) {
-                    //delete the user_token session
-                    $request->session()->forget('user_token');
+            // Check if the token exists in the database
+            $userToken = UserToken::where('token', $token)->first();
 
-                }
-                session(['user_token' => $token]); // Create session
-                return response()->json(['success' => true, 'message' => 'Welcome back token from database and localstorage!']);
+            if ($userToken) {
+                // Token exists, set session
+                session(['user_token' => $token]);
+                return response()->json(['success' => true, 'message' => 'Welcome back!']);
             }
-            else {
-                // Invalid token: return error message
-                return response()->json(['error' => false, 'message' => 'Invalid token.']);
-            }
-        } else {
-            // No token provided: create a new token
-            $newToken = Str::random(40);
 
-            UserToken::create(['token' => $newToken]); // Save new token in the database
-            //if there is user_token session kill all sessions and create a new session
-            if (session()->has('user_token')) {
-                //delete the user_token session
-                $request->session()->forget('user_token');
-
-            }
-            session(['user_token' => $newToken]); // Create session
-            return response()->json(['success' => true, 'token' => $newToken, 'message' => 'Welcome to Website Name!']);
+            // Token not found in database, generate a new one
+            return $this->generateNewToken();
         }
+
+        // No token provided, generate a new one
+        return $this->generateNewToken();
+    }
+
+    private function generateNewToken()
+    {
+        $newToken = Str::random(40);
+
+        // Save new token in database
+        UserToken::create(['token' => $newToken]);
+
+        // Set session with the new token
+        session(['user_token' => $newToken]);
+
+        return response()->json([
+            'success' => true,
+            'token' => $newToken,
+            'message' => 'Welcome to our restaurant'
+        ]);
     }
     public function show($menuSlug)
     {

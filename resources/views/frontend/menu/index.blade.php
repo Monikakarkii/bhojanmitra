@@ -270,24 +270,20 @@
         });
 
         document.addEventListener('DOMContentLoaded', () => {
-            const userToken = localStorage.getItem('user_token');
-            if (userToken) {
-                const userTokenUrl = "{{ route('menu.user.token') }}?token=" + userToken;
-                fetch(userTokenUrl)
-                    .then(response => response.json())
-                    .then(data => console.log(data.message))
-                    .catch(console.error);
-            } else {
-                console.log("token not found");
-                const userTokenUrl = "{{ route('menu.user.token') }}";
-                fetch(userTokenUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        localStorage.setItem('user_token', data.token);
-                        console.log(data.message);
-                    })
-                    .catch(console.error);
+    let userToken = localStorage.getItem('user_token');
+    let userTokenUrl = userToken
+        ? "{{ route('menu.user.token') }}?token=" + userToken
+        : "{{ route('menu.user.token') }}";
+
+    fetch(userTokenUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data.token) {
+                localStorage.setItem('user_token', data.token);
             }
-        });
+            console.log(data.message);
+        })
+        .catch(console.error);
+});
     </script>
 @endsection
