@@ -7,7 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $table = 'orders';
-    protected $fillable = ['table_id', 'order_status', 'payment_method', 'total_amount', 'notes'];
+    protected $fillable = [
+        'table_id',
+        'order_status',
+        'payment_method',
+        'total_amount',
+        'notes',
+        'pay_status',
+         'pay_note',
+    ];
 
     public function table()
     {

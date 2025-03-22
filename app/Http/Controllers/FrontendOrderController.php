@@ -54,6 +54,7 @@ class FrontendOrderController extends Controller
             $order->payment_method = $request->paymentMethod ?? 'online';
             $order->total_amount = $grandTotal;
             $order->notes = $request->note ?? null;
+            $order->pay_status = ($order->payment_method === 'online') ? 1 : 0;
 
             $customerToken = session('user_token');
             if ($customerToken) {
@@ -93,7 +94,7 @@ class FrontendOrderController extends Controller
         $cart = session()->get('cart', []);
         $grandTotal = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
 
-        $return_url = "http://192.168.0.144:8080/callback";
+        $return_url = "http://127.0.0.1:8000/callback";
         $purchase_order_id = uniqid(); // Generate a unique ID for the transaction
         $purchase_order_name = "Order for Table " . session('user_table'); // Dynamic order name
         $amount = $grandTotal * 100; // Convert total amount to paisa
@@ -134,6 +135,7 @@ class FrontendOrderController extends Controller
             $order = $this->saveOrder($request);
 
             if ($order) {
+                $order->update(['pay_status' => 1]);
                 // Clear the cart from the session
                 session()->forget('cart');
 

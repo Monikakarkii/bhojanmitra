@@ -84,7 +84,7 @@
                                     <td><strong>Rs.{{ number_format($order->total_amount, 2) }}</strong></td>
                                     <td><i class="fas fa-clock"></i> {{ $order->created_at->format('Y-m-d H:i:s') }}</td>
                                     <td>
-                                        <a href="#" class="btn btn-info btn-sm">
+                                        <a href=" {{ route('orders.show', $order->id) }}" class="btn btn-info btn-sm">
                                             <i class="fas fa-eye"></i> View
                                         </a>
                                         {{-- <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-warning btn-sm">

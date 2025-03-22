@@ -43,7 +43,9 @@ Route::prefix('admin')
     Route::get('/dashboard', function () {
         $menuItemCount = MenuItem::count(); // Get the count directly from the database
         $tablesCount = Table::count();
-        $todaySales = Sale::whereDate('completed_at', Carbon::today())->sum('total_amount');
+        $todaySales = Order::where('pay_status', 1) // Only paid orders
+    ->whereDate('created_at', Carbon::today()) // Only today's orders
+    ->sum('total_amount');
         $orders = Order::where('order_status', 'pending')->latest()->take(5)->get();
         return view('backend.dashboard', compact('menuItemCount', 'tablesCount', 'orders','todaySales'));
     })->name('dashboard');
@@ -60,7 +62,11 @@ Route::prefix('admin')
         Route::resource('menu-items', MenuItemController::class);
         Route::post('/menuitems/search', [MenuItemController::class, 'search'])->name('menu-items.search');
 
-        Route::resource('orders', OrderController::class)->except(['show']);
+        Route::resource('orders', OrderController::class);
+        Route::get('/orders/{id}/generate-bill', [OrderController::class, 'generateBill'])->name('orders.generateBill');
+        Route::put('/orders/{id}/update-payment', [OrderController::class, 'updatePayment'])->name('orders.updatePayment');
+
+
         Route::post('order-items', [OrderItemController::class, 'store'])->name('order-items.store');
 
         Route::get('/sales', [SalesController::class, 'index'])->name('sales.index');

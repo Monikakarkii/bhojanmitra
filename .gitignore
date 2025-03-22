@@ -4,7 +4,7 @@
 /public/hot
 /public/storage
 /public/qr_codes/*
-/public/menu_items/*
+/public/menu-items/*
 /public/categories/*
 /public/app_logo/*
 /storage/*.key
