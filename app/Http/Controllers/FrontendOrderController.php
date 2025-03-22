@@ -94,7 +94,7 @@ class FrontendOrderController extends Controller
         $cart = session()->get('cart', []);
         $grandTotal = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
 
-        $return_url = "http://127.0.0.1:8000/callback";
+        $return_url = config('app.url') . '/callback';
         $purchase_order_id = uniqid(); // Generate a unique ID for the transaction
         $purchase_order_name = "Order for Table " . session('user_table'); // Dynamic order name
         $amount = $grandTotal * 100; // Convert total amount to paisa
