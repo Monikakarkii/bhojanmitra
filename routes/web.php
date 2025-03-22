@@ -16,6 +16,7 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\KitchenController;
 use App\Models\MenuItem;
 use App\Models\Order;
 use App\Models\Table;
@@ -31,14 +32,15 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])
-            ->name('login');
-            Route::post('login', [AuthenticatedSessionController::class, 'store']);
-            Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+->name('login');
+
+Route::post('login', [AuthenticatedSessionController::class, 'store']);
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 
 //create a prefix name admin
 Route::prefix('admin')
-->middleware('admin')
+->middleware('role:admin')
 ->group(function () {
     Route::get('/dashboard', function () {
         $menuItemCount = MenuItem::count(); // Get the count directly from the database
@@ -118,8 +120,17 @@ Route::prefix('admin')
            // For GET requests
           Route::get('/callback', [FrontendOrderController::class, 'verify'])->name('payment.callback.get');
 
-
-
-
-
     });
+        //route for kitchen with middleware Kitchen_or_admin routes
+        Route::prefix('kitchen')
+        ->middleware('kitchen_or_admin') // Ensure this middleware checks roles properly
+        ->group(function () {
+            Route::get('/dashboard', [KitchenController::class, 'dashboard'])->name('kitchen-dashboard');
+            Route::put('/order/change-status/{id}/{status}', [KitchenController::class, 'changeStatus'])->name('order.changeStatus');
+            //kitchen history
+            Route::get('/history', [KitchenController::class, 'history'])->name('kitchen.history');
+
+
+
+
+        });
