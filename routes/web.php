@@ -26,10 +26,20 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrontendOrderController;
 use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\NewPasswordController;
 
 Route::get('/', function () {
     return view('home');
 })->name('home');
+  // Show password reset request form
+  Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
+  Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
+  // Show password reset form
+Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
+// Handle new password submission
+Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.update');
+Route::post('/logout', [MenuController::class, 'logout'])->name('logout');
 
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])
 ->name('login');
@@ -94,7 +104,7 @@ Route::prefix('admin')
 
         Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
-        Route::put('password', [PasswordController::class, 'update'])->name('password.update');
+        Route::put('password', [PasswordController::class, 'update'])->name('password.updates');
 
     });
 
