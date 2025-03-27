@@ -40,7 +40,7 @@
 
                         <div class="table-responsive">
                             <table id="tablesTable" class="table table-bordered table-hover">
-                                <thead >
+                                <thead>
                                 <tr>
                                     <th class="text-center">#</th>
                                     <th class="text-center">Table Number</th>
@@ -52,26 +52,22 @@
                                 <tbody>
                                 @foreach ($tables as $table)
                                     <tr>
+                                        <td class="text-center">{{ $loop->iteration }}</td>
+                                        <td class="text-center">{{ $table->table_number }}</td>
                                         <td class="text-center">
-                                            <a href="{{ route('tables.edit', $table->id) }}">
-                                                {{ $loop->iteration }}
-                                            </a>
-                                        </td>
-                                        <td class="text-center">
-                                            <a href="{{ route('tables.edit', $table->id) }}">
-                                                {{ $table->table_number }}
-                                            </a>
-                                        </td>
-                                        <td class="text-center">
-                                            <a href="{{ asset($table->qr_code) }} data-lightbox="{{$loop->iteration}}" data-title="{{$table->table_number}}">
+                                            <a href="{{ asset($table->qr_code) }}" data-lightbox="{{$loop->iteration}}" data-title="{{$table->table_number}}">
                                                 <img src="{{ file_exists(public_path($table->qr_code)) ? asset($table->qr_code) : asset('default/no-image.png') }}"
                                                      alt="QR Code for {{ $table->table_number }}" title="QR Code for {{ $table->table_number }}" style="max-width: 80px; height: 80px;">
                                             </a>
+                                            <br>
+                                            <button class="btn btn-primary btn-sm download-btn" data-img="{{ asset($table->qr_code) }}" data-name="QR_{{ $table->table_number }}.png">
+                                                <i class="fas fa-download"></i> Download
+                                            </button>
                                         </td>
                                         <td class="text-center">
-            <span class="badge {{ $table->status == 'active' ? 'badge-success' : 'badge-danger' }}">
-                {{ ucfirst($table->status) }}
-            </span>
+                                            <span class="badge {{ $table->status == 'active' ? 'badge-success' : 'badge-danger' }}">
+                                                {{ ucfirst($table->status) }}
+                                            </span>
                                         </td>
                                         <td class="text-center">
                                             <a class="btn btn-info btn-sm" href="{{ route('tables.edit', $table->id) }}">
@@ -87,11 +83,9 @@
                                         </td>
                                     </tr>
                                 @endforeach
-
                                 </tbody>
                             </table>
                         </div>
-
                         <div id="pagination-links">
                             {{$tables->links()}}
                         </div>
@@ -103,74 +97,28 @@
 @endsection
 
 @section('customJs')
-    <script>
-   
-        $('#search').on('keyup', function() {
-            search();
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".download-btn").forEach(button => {
+        button.addEventListener("click", function() {
+            let imageUrl = this.getAttribute("data-img"); // Get SVG URL
+            let imageName = this.getAttribute("data-name").replace('.png', '.svg'); // Ensure .svg extension
+
+            fetch(imageUrl)
+                .then(response => response.text()) // Fetch as text for SVG
+                .then(svgContent => {
+                    let blob = new Blob([svgContent], { type: "image/svg+xml" }); // Create Blob for SVG
+                    let link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = imageName; // Download as .svg
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                })
+                .catch(error => console.error("Error downloading SVG:", error));
         });
+    });
+});
 
-        // Listen for changes in the "perPage" dropdown to change pagination dynamically
-        $('#perPage').on('change', function() {
-            search();
-        });
-
-        function search() {
-            var keyword = $('#search').val();
-            var perPage = $('#perPage').val(); // Get the selected number of items per page
-
-            $.post('{{ route("tables.search") }}', {
-                _token: $('meta[name="csrf-token"]').attr('content'),
-                keyword: keyword,
-                per_page: perPage  // Send per_page as part of the request
-            }, function(data) {
-                table_post_row(data);
-                updatePagination(data);  // Update the pagination links dynamically
-            });
-        }
-
-        function table_post_row(res) {
-            let htmlView = '';
-            if (res.tables.data.length <= 0) {
-                htmlView += `
-                <tr>
-                    <td colspan="5" class="text-center">No data found.</td>
-                </tr>`;
-            }
-            for (let i = 0; i < res.tables.data.length; i++) {
-                let qrCodeUrl = window.location.origin + '/' + res.tables.data[i].qr_code;
-                qrCodeUrl = (new Image().src = qrCodeUrl, new Image().complete) ? qrCodeUrl : window.location.origin + '/default/no-image.png';
-                let editUrl = '{{ route("tables.edit", ":id") }}'.replace(':id', res.tables.data[i].id); // Dynamic edit route
-                let deleteUrl = '{{ route("tables.destroy", ":id") }}'.replace(':id', res.tables.data[i].id); // Dynamic delete route
-
-                htmlView += `
-                <tr>
-                    <td class="text-center">${i + 1}</td>
-                    <td class="text-center">${res.tables.data[i].table_number}</td>
-                    <td class="text-center">
-                          <img src="${qrCodeUrl}" alt="QR Code for ${res.tables.data[i].table_number}" title="QR Code for ${res.tables.data[i].table_number}" style="max-width: 80px; height: 80px;">
-                    </td>
-                    <td class="text-center">
-                        <span class="badge ${res.tables.data[i].status === 'available' ? 'badge-success' : 'badge-danger'}">
-                            ${res.tables.data[i].status.charAt(0).toUpperCase() + res.tables.data[i].status.slice(1)}
-                        </span>
-                    </td>
-                    <td class="text-center">
-                        <div class="d-flex justify-content-center">
-                            <a href="${editUrl}" class="btn btn-info btn-sm mr-2">
-                                <i class="fas fa-pencil-alt"></i> Edit
-                            </a>
-                            <a href="#" onclick="confirmDelete(${res.tables.data[i].id})" class="btn btn-danger btn-sm mr-2">
-                                <i class="fas fa-trash"></i> Delete
-                            </a>
-                            <form id="delete-form-${res.tables.data[i].id}" action="${deleteUrl}" method="POST" style="display: none;">
-                                @csrf
-                @method('DELETE')
-                </form>
-            </div>
-        </td>
-    </tr>`;
-            }
-            $('tbody').html(htmlView);
-        }
-    </script>
+</script>
 @endsection
