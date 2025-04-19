@@ -53,7 +53,7 @@
 
             <!-- Add Note Section -->
             <div class="mt-3 mb-3">
-                <label for="cartNote" style="color: var(--text-color); background-color: var(--background-color)">Add a
+                <label for="cartNote" name="cartNote" style="color: var(--text-color); background-color: var(--background-color)">Add a
                     Note:</label>
                 <textarea id="cartNote" class="form-control" rows="3"
                     style="color: var(--text-color); background-color: var(--background-color)"></textarea>
@@ -62,9 +62,10 @@
             <h4 class="mt-3 mb-3">Total: Rs{{ $grandTotal }}</h4>
 
             <!-- Order Review Modal -->
-
             <form id="orderForm" action="{{ route('menu.order.store') }}" method="POST">
                 @csrf
+                <input type="hidden" name="cart_note" id="hiddenCartNote"> <!-- Hidden note input -->
+
                 <div class="modal fade" id="orderReviewModal" tabindex="-1" aria-labelledby="orderReviewModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content" style="background-color: var(--background-color); color: var(--text-color);">
@@ -154,28 +155,22 @@
             });
         });
 
-        $('#confirmOrder').click(function() {
-            const paymentMethod = $('#paymentMethod').val();
+        $('#confirmOrder').click(function () {
             const cartNote = $('#cartNote').val();
+            $('#hiddenCartNote').val(cartNote); // Pass note to hidden input
+
+            const paymentMethod = $('#paymentMethod').val();
             const grandTotal = {{ $grandTotal ?? 0 }};
             const cart = [];
 
-            // Collect cart data from the table rows
-            $('table tbody tr').each(function() {
+            $('table tbody tr').each(function () {
                 const id = $(this).find('.update-quantity').data('id');
                 const name = $(this).find('td:nth-child(2)').text().trim();
                 const price = parseFloat($(this).find('td:nth-child(3)').text().replace('Rs', '').trim());
                 const quantity = parseInt($(this).find('.update-quantity').val());
                 const image = $(this).find('td:first-child img').attr('src');
-                // Only push valid items
                 if (id && !isNaN(price) && !isNaN(quantity)) {
-                    cart.push({
-                        id,
-                        name,
-                        price,
-                        quantity,
-                        image
-                    });
+                    cart.push({ id, name, price, quantity, image });
                 }
             });
 

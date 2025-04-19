@@ -21,9 +21,6 @@ class SalesExport implements FromCollection, WithHeadings
     public function collection()
     {
         return Sale::with('order') // Ensure order relationship is loaded
-            ->whereHas('order', function ($query) {
-                $query->where('pay_status', 1); // Filtering from the orders table
-            })
             ->when($this->paymentMethod, function ($query) {
                 return $query->where('payment_method', $this->paymentMethod);
             })

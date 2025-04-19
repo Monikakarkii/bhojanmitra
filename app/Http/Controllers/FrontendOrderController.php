@@ -37,6 +37,9 @@ class FrontendOrderController extends Controller
 
     private function saveOrder($request)
     {
+
+
+
         try {
             $table_id = session('user_table');
             $cart = session()->get('cart', []);
@@ -47,13 +50,12 @@ class FrontendOrderController extends Controller
             }
 
             $grandTotal = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
-
             $order = new Order();
             $order->table_id = $table_id;
             $order->order_status = 'pending';
             $order->payment_method = $request->paymentMethod ?? 'online';
             $order->total_amount = $grandTotal;
-            $order->notes = $request->note ?? null;
+            $order->notes = $request->input('cart_note');
             $order->pay_status = ($order->payment_method === 'online') ? 1 : 0;
 
             $customerToken = session('user_token');

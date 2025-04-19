@@ -26,4 +26,8 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+    public function latestItem()
+{
+    return $this->hasOne(OrderItem::class)->latestOfMany(); // uses 'created_at' or 'id'
+}
 }

@@ -10,7 +10,7 @@ class KitchenController extends Controller
     public function dashboard()
     {
         // Fetch orders with 'pending' or 'preparing' status
-        $orders = Order::whereIn('order_status', ['pending', 'preparing'])->with('items')->get();
+        $orders = Order::whereIn('order_status', ['pending', 'preparing'])->latest()->get();
 
         // Pass orders to the view
         return view('kitchen.dashboard', compact('orders'));
